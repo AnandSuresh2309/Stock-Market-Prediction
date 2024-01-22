@@ -1,4 +1,4 @@
-# from matplotlib.pyplot import axis
+# Import necessary libraries
 import streamlit as st
 import pandas as pd
 import yfinance as yf
@@ -9,8 +9,10 @@ from prophet.plot import plot_plotly
 import time
 import data_loader
 
+# Set Streamlit page configuration as wide
 st.set_page_config(layout="wide")
 
+# Display header with styling
 today = date.today()
 st.markdown("""
 <style>
@@ -20,21 +22,28 @@ st.markdown("""
     margin-bottom: 20px;
     color: Orange;
   }
+</style>
 """, unsafe_allow_html=True)
 
 st.markdown(f"<h1 class='header'>{''' Stock Market Prediction '''}</h1>", unsafe_allow_html=True)
 
+# Initialize Streamlit session state
 session_state = st.session_state
 if "current_tab" not in session_state:
     session_state.current_tab = "Stocks History and Comparison"
 
+# Create tabs for different views
 comparison, real_time, prediction = st.tabs(["Stocks History and Comparison", "Real-Time View", "Stock_Prediction"])
 
+# Read stock data from a CSV file
 stock_df = pd.read_csv("tickers.csv")
 tickers = stock_df["Name"]
 
 # Stocks History and Comparison 
 with comparison:
+    # Create date input fields and multiselect dropdown
+    # Load data based on user input and display raw data and charts
+
     col1, col2 = st.columns(2)
     with col1:
         start = st.date_input('Start', datetime.date(2019, 1, 1))
@@ -80,6 +89,10 @@ with comparison:
 
 # Real-Time View
 with real_time:
+    # Create tabs for real-time view and company performance
+    # Allow user to select a company and visualize real-time stock data
+    # Provide options to display data in Candle Stick or Line Chart format
+
     st.subheader("Real-Time Stock Price")
     ticker_df = pd.read_csv("tickers.csv", header=None, index_col=0)
     ticker_lst = ticker_df[1].tolist()
@@ -120,6 +133,10 @@ with real_time:
 
 # Stock_prediction
 with prediction:
+    # Allow user to pick a company for stock prediction
+    # Fetch historical stock data, display raw data, and perform stock prediction using Prophet
+    # Visualize forecast data, forecast plot, and forecast components
+
     st.subheader("Stock_Prediction")
     b = st.selectbox('Pick your company', tickers)
 
